@@ -1,0 +1,27 @@
+# Use PHP73 as default
+AddHandler application/x-httpd-php73 .php
+
+#This is the right htaccess page
+
+<IfModule mod_rewrite.c>
+    
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    
+    RewriteEngine On
+
+    #sal commented RewriteCond %{REQUEST_FILENAME} !-f
+    #RewriteRule  ^(.*)$ /star2020/public/$1 [L] 
+    #sal commented RewriteRule .* index.php
+
+    #RewriteRule \/star2020\/(?!public)(.*)$ /star2020/public/$1 [L,R] 
+    #RewriteRule  ^(.*)$ /star2020/public/$1 [L] 
+    
+    #Sallie found
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+
+
+</IfModule>
