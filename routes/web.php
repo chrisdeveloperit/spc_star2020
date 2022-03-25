@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\MetersController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 
+use App\Http\Controllers\FpFloorpAdmController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,6 +90,10 @@ Route::get('show_not_reporting_devices/{summary}', 'Device_SummariesController@s
 //Route::get('setSelectedSessionVariable({goToUrl}, {varName}, {thisVar})', 'Device_SummariesController@show_device_data')->name('show_device_data')->middleware('auth');
 
 Route::get('/testPage', 'Device_SummariesController@index')->name('testPage')->middleware('auth');
+
+Route::get('/fpfloorpadm', 'FpFloorpAdmController@index')->name('fpfloorpadm.index')->middleware('auth');
+
+Route::post('/fpfloorpadm', [FpFloorpAdmController::class,'show'])->name('fpfloorpadm.index')->middleware('auth');
 
 //Route::get('ajax',function() { return view('GaugesController@show_by_org_year');});
 //Route::post('/get_org_data','AjaxController@index');

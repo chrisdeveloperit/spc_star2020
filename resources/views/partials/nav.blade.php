@@ -150,8 +150,8 @@
                                 </a>
 								<ul>
 									<li>
-										<a href="settings_how_it_works.html" data-filter-tags="theme settings how it works">
-											<span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Floorplans Admin</span>
+                           <a href="{{route('fpfloorpadm.index')}}" data-filter-tags="floorplans admin">
+											<span class="nav-link-text" data-i18n="nav.floorplans_admin">Floorplans Admin</span>
 										</a>
 									</li>
 									<li>
