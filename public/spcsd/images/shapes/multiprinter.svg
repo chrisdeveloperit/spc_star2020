@@ -1,0 +1,8 @@
+<svg width="12cm" height="4cm" viewBox="0 0 1200 400"
+		 xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny">
+		  <g transform="scale(0.32)">
+		  <polygon fill="lime" stroke="blue" stroke-width="10" 
+					points="850,75  958,137.5 958,262.5
+							850,325 742,262.6 742,137.5" />
+          </g>
+	  </svg>
