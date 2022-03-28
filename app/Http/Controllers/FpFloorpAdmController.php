@@ -60,29 +60,29 @@ public function show(Request $request)
 
       $floorplans = DB::table('floorplans AS fp')
       ->join('buildings AS bldg', 'bldg.bldg_id', '=', 'fp.buildings_id')
-      ->select('fp.id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')			
+      ->select('fp.id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
       ->where(array('fp.buildings_id' => $request->buildingsSel,
-            'fp.floor_number' => $floor_num))			
+            'fp.floor_number' => $floor_num))
       ->orderBy('fp.floor_number')
       ->first();
-          
+
       $buildings = Building::orderBy('bldg_name')
          ->where('buildings.organizations_id', '=', $request->sorg_id)
          ->get();
-      
+
       $floorplan_machines = null;
 
       if($floorplans <> null) {
          $floorplan_machines = DB::table('floorplan_machines AS fm')
             ->join('machine_specs AS ms','ms.spec_id', '=', 'fm.model_id')
             ->leftjoin('machine_types AS mt','fm.type_id', '=', 'mt.id')
-            ->select('fm.id', 'fm.model_id', 'fm.present_model_id', 'fm.x_position', 'fm.y_position', 'fm.floorplan_id', 'fm.room_number', 'fm.serial_number', 'fm.budgeted_blk', 'fm.cpc_black', 'fm.budgeted_color', 'fm.cpc_color', 'fm.5_year_id', 'fm.type_id', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.local_connection', 'fm.commencement_date', 'fm.commencement_black_meter', 'fm.commencement_color_meter', 'fm.present_floorplan_id', 'fm.present_room_number', 'fm.present_x_position', 'fm.present_y_position', 'fm.present_local_connection', 'fm.mac_address', 'fm.IP_Address', 'fm.present_serial_number', 'fm.vendor_device_id', 'fm.savedname', 'fm.save_name_id', 'fm.date_created', 'fm.fp_mod_dts', 'fm.out_of_service', 'ms.make', 'ms.model', 'ms.model_id', 'ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
+            ->select('fm.fpm_id', 'fm.model_id', 'fm.present_model_id', 'fm.x_position', 'fm.y_position', 'fm.floorplan_id', 'fm.room_number', 'fm.serial_number', 'fm.budgeted_blk', 'fm.cpc_black', 'fm.budgeted_color', 'fm.cpc_color', 'fm.5_year_id', 'fm.type_id', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.local_connection', 'fm.commencement_date', 'fm.commencement_black_meter', 'fm.commencement_color_meter', 'fm.present_floorplan_id', 'fm.present_room_number', 'fm.present_x_position', 'fm.present_y_position', 'fm.present_local_connection', 'fm.mac_address', 'fm.IP_Address', 'fm.present_serial_number', 'fm.vendor_device_id', 'fm.savedname', 'fm.save_name_id', 'fm.date_created', 'fm.fp_mod_dts', 'fm.out_of_service', 'ms.make', 'ms.model', 'ms.model_id', 'ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
             ->where('fm.floorplan_id', '=', $floorplans->id)
             ->where('fm.under_contract', '=', 'Y')
             ->get();
             \Log::info(json_encode($floorplan_machines));
       }
-      
+
       return view('fpfloorpadm.index', ['sbldg_id' => $request->buildingsSel, 'sorg_id' => $request->sorg_id, 'sfloornum' => $floor_num])
             ->with('buildings', $buildings)
             ->with('floorplans', $floorplans)
