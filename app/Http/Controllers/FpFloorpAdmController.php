@@ -51,16 +51,35 @@ public function show(Request $request)
       ->orderby('org_name')
       ->get();
 
+      $arry_floors = [];
+      $floor_num = NULL;
+
       $total_floors = DB::table('floorplans')
       ->select('floor_number')
       ->where('buildings_id', '=', $request->buildingsSel)
+      ->orderby('floor_number')
       ->get();
 
-      $floor_num = $request->radioFloors ?? '1';
+      if($request->buildingsSel !== NULL && $total_floors !== NULL) {
+         $arry_floors = json_decode($total_floors, true);
+         \Log::info("FLOORS");
+         \Log::info($arry_floors);
+         $floor_num = $request->radioFloors ?? $arry_floors[0];
+      }
+      
+      # \Log::info(json_encode($total_floors));
+
+      // $array_floors = array();
+      // while ($row = mysqli_fetch_assoc($total_floors)) {
+      //    $array_floors[] = $row['floor_number'];
+      // }
+
+      
+      # $floor_num = $request->radioFloors;
 
       $floorplans = DB::table('floorplans AS fp')
       ->join('buildings AS bldg', 'bldg.bldg_id', '=', 'fp.buildings_id')
-      ->select('fp.id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
+      ->select('fp.fp_id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
       ->where(array('fp.buildings_id' => $request->buildingsSel,
             'fp.floor_number' => $floor_num))
       ->orderBy('fp.floor_number')
@@ -74,13 +93,12 @@ public function show(Request $request)
 
       if($floorplans <> null) {
          $floorplan_machines = DB::table('floorplan_machines AS fm')
-            ->join('machine_specs AS ms','ms.spec_id', '=', 'fm.model_id')
-            ->leftjoin('machine_types AS mt','fm.type_id', '=', 'mt.id')
-            ->select('fm.fpm_id', 'fm.model_id', 'fm.present_model_id', 'fm.x_position', 'fm.y_position', 'fm.floorplan_id', 'fm.room_number', 'fm.serial_number', 'fm.budgeted_blk', 'fm.cpc_black', 'fm.budgeted_color', 'fm.cpc_color', 'fm.5_year_id', 'fm.type_id', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.local_connection', 'fm.commencement_date', 'fm.commencement_black_meter', 'fm.commencement_color_meter', 'fm.present_floorplan_id', 'fm.present_room_number', 'fm.present_x_position', 'fm.present_y_position', 'fm.present_local_connection', 'fm.mac_address', 'fm.IP_Address', 'fm.present_serial_number', 'fm.vendor_device_id', 'fm.savedname', 'fm.save_name_id', 'fm.date_created', 'fm.fp_mod_dts', 'fm.out_of_service', 'ms.make', 'ms.model', 'ms.model_id', 'ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
-            ->where('fm.floorplan_id', '=', $floorplans->id)
+            ->join('machine_specs AS ms','ms.spec_id', '=', 'fm.present_spec_id')
+            ->leftjoin('machine_types AS mt','fm.present_type_id', '=', 'mt.mach_type_id')
+            ->select('fm.fpm_id', 'fm.present_spec_id', 'fm.present_floorplans_id', 'fm.room_name', 'fm.present_serial_number', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.present_x_position', 'fm.present_y_position', 'fm.mac_address', 'fm.ip_address', 'fm.present_serial_number', 'fm.present_vendor_mach_id', 'ms.make', 'ms.model', 'ms.spec_id','ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
+            ->where('fm.present_floorplans_id', '=', $floorplans->fp_id)
             ->where('fm.under_contract', '=', 'Y')
             ->get();
-            \Log::info(json_encode($floorplan_machines));
       }
 
       return view('fpfloorpadm.index', ['sbldg_id' => $request->buildingsSel, 'sorg_id' => $request->sorg_id, 'sfloornum' => $floor_num])

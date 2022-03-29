@@ -142,7 +142,7 @@
          <thead>
             <tr style="background-color: #f0f8fa">
                <th scope="col">#</th>
-               <th scope="col"><img class="ink" src="/images/black_drop.jpg" /></th>
+               <th scope="col"><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></th>
                <th scope="col">Room</th>
                <th scope="col">Make</th>
                <th scope="col">Model</th>
@@ -151,18 +151,18 @@
          </thead>
          <tbody>
          @foreach($machines as $mac)
-            <tr class="machinelist" id="row{{$mac->id}}" data-id="{{$mac->id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_number}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->IP_Address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="Vendor">
+            <tr class="machinelist" id="row{{$mac->fpm_id}}" data-id="{{$mac->fpm_id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_name}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->ip_address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="{{$mac->make}}">
                <th scope="row">{{$loop->index + 1 }}</th>
-               @if($mac->is_color == 'N')
-               <td><img class="ink" src="/images/black_drop.jpg" /></td>
+               @if($mac->is_color === 'N')
+               <td><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></td>
                @else
-               <td><img class="ink" src="/images/magenta_drop.jpg" /></td>
+               <td><img class="ink" src="{{asset('spcsd/images/magenta_drop.jpg')}}" /></td>
                @endif
-               <td>{{$mac->room_number}}</td>
+               <td>{{$mac->room_name}}</td>
                <td>{{$mac->make}}</td>
                <td>{{$mac->model}}</td>
                <td>
-                  {{$connect = $mac->local_connection == 'N'? "Networked" : "Local";}}
+                  {{$connect = $mac->ip_address !== NULL ? "Networked" : "Local";}}
                </td>
             </tr>
          @endforeach
@@ -279,7 +279,7 @@
    }
    @if(isset($machines) )
       @foreach($machines as $mac)
-      createDragItem({{$mac->id}}, {{$mac->x_position}}, {{$mac->y_position}}, "{{$loop->index + 1 }}", "{{$mac->room_number}}", "{{$mac->icon_type}}");
+      createDragItem({{$mac->fpm_id}}, {{$mac->present_x_position}}, {{$mac->present_y_position}}, "{{$loop->index + 1 }}", "{{$mac->room_name}}", "{{$mac->icon_type}}");
    @endforeach 
    @endif 
 
