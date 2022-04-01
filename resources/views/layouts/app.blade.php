@@ -162,8 +162,8 @@
 	
 	
 	<!--added 3/28/2020 for modals-->
-	<!--<script type="text/javascript" src="{{asset('custom/js/bootstrap.min.js')}}"></script>
-	<script type="text/javascript" src="{{asset('custom/js/popper.min.js')}}"></script>-->
+	<script type="text/javascript" src="{{asset('custom/js/bootstrap.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('custom/js/popper.min.js')}}"></script>
 	
 	<!--<script type="text/javascript" src="{{asset('custom/js/datatables.bundle.js')}}"></script>-->
 	<script>
