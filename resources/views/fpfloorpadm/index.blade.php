@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-
+<script type="text/javascript" src="{{asset('jQuery-3.3.1/jquery-3.3.1.min.js')}}"></script>
 <div>
+   <div class="toast" id="popmsg" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1800">
+      <div id="tbody" class="toast-body  bg-warning d-flex justify-content-center align-items-center"> toast message. </div>
+   </div>
+
 	<form name="selectboxes" id="selectboxes" action="{{ route('fpfloorpadm.index') }}" method="post">
 	@csrf
 		<div class="container-fluid">
@@ -59,8 +61,7 @@
 									@if($flr->floor_number == $sfloornum)
 										checked
 									@endif
-								@endif
-                     >
+								@endif >
                      <label class="form-check-label">{{$flr->floor_number}}</label>
                   </div>
                   @endforeach
@@ -177,11 +178,7 @@
    <div id="floorplandiv" class="displayDiv">
    </div>
 </div><!-- end panel-1 -->
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
-   <div class="toast" id="popmsg" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1200">
-   <div class="toast-body"> toast message. </div>
-   </div>
-</div>
+
       <!-- MODAL WINDOW -->
 <div class="modal fade" id="fpmModal" tabindex="-1" aria-labelledby="fpmModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -200,7 +197,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button type="button" id="saveXY" class="btn btn-primary btn-sm" data-dismiss="modal">Save changes</button>
+        <button type="button" id="saveXY" class="btn btn-primary btn-sm" data-dismiss="modal">Save Changes</button>
       </div>
    </form>  
     </div>
@@ -208,7 +205,9 @@
 </div>
 
 </main> 
+@endsection
 
+@section('css')
 <style>
    label { font-weight: bold;}
    .detailLabel {
@@ -264,15 +263,24 @@
 
    .bg-warning {opacity: 0.85;}
    .bgblue { background-color: #f0f8fa; }
-</style>
-
-<style>
+   .toast { 
+      max-width: 200px; 
+      left: 55%;
+      top: 40%;
+      position: fixed;
+      transform: translate(-50%, -40%);
+      z-index: 100;
+   }
+   .toast-body { min-height:4em; }
    @if(isset($floorplans->floorplan_image))
 
    .displayDiv { position: relative; width: 1000px; height: 726px; border: solid 1px #ccc;
    background-image: url("{{asset('spcsd/images/floorplans')}}/{{$floorplans->floorplan_image}}"); background-size: contain; display: block; background-repeat: no-repeat; border-radius: 3px;}
    @endif 
 </style>
+@endsection
+
+@section('scripts')
 
 <script>
 
@@ -341,20 +349,21 @@
             dataType: "text",
             encode: true, 
          })
-         .done(function( msg ) {
-            toastMessage(msg);
+         .done( function( msg ) {
+            $('#tbody').text(msg);
+            $('#popmsg').toast('show');
          })
          .fail(function( jqXHR, textStatus ) {
-            toastMessage("Request failed: " + textStatus );
+            $('#tbody').text("Request failed: " + textStatus);
+            $('#popmsg').toast('show');
          });
 
-         e.preventDefault();
+        // e.preventDefault();
       });
    });
 
-   let toastMessage = function (msg) {
-      console.log('TOAST '+ msg);
-         $('.toast-body').text(msg);
+   const toastMessage = function (msg) {
+         $('#tbody').text(msg);
          $('#popmsg').toast('show');
       }  
 
