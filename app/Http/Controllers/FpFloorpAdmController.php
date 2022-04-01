@@ -123,8 +123,8 @@ public function update_xy(Request $request, $fpm_id)
       $machine->modified_date = Carbon::now();
       $machine->modified_by = 1272;
       $machine->update();
-      session()->flash('success', 'Machine location was successfully updated');
-		return 'Machine location was successfully updated';
+
+		return 'Machine location was updated';
    }
 
 }
