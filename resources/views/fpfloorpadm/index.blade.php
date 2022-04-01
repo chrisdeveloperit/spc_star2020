@@ -5,14 +5,14 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 
 <div>
-	<form action="{{ route('fpfloorpadm.index') }}" method="post">
+	<form name="selectboxes" id="selectboxes" action="{{ route('fpfloorpadm.index') }}" method="post">
 	@csrf
 		<div class="container-fluid">
 			<div class="d-flex">
 				<div class="form-group p-1">
 					<label for="buildingsSel">Organization</label>
 
-					<select name="sorg_id" id="sorg_id" class="form-control mb-2" onchange="form.submit()">
+					<select name="sorg_id" id="sorg_id" class="form-control mb-2" onchange="this.form.submit()">
 						<option value="">Select an Organization</option>
 						<!--Display all orgs from the resultset.-->
                   @if(isset($org_data))
@@ -31,7 +31,7 @@
             <div class="form-group p-1">
 					<label for="buildingsSel">Buildings</label>
 
-					<select name="buildingsSel" id="buildingsSel" class="form-control mb-2" onchange="form.submit()">
+					<select name="buildingsSel" id="buildingsSel" class="form-control mb-2" onchange="this.form.submit()">
 						<option value="">Select a building</option>
 						<!--Display all orgs from the resultset.-->
                   @if(isset($buildings))
@@ -173,12 +173,41 @@
   </div>
 </div>
    @endif
-      <div id="panel-1" class="panel">
-         <div id="floorplandiv" class="displayDiv">
+<div id="panel-1" class="panel">
+   <div id="floorplandiv" class="displayDiv">
+   </div>
+</div><!-- end panel-1 -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+   <div class="toast" id="popmsg" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1200">
+   <div class="toast-body"> toast message. </div>
+   </div>
+</div>
+      <!-- MODAL WINDOW -->
+<div class="modal fade" id="fpmModal" tabindex="-1" aria-labelledby="fpmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content bg-light">
+   <form name="updateRoom" id="updateRoom" action="" method="put">
+      @csrf
+      @method('PUT')
+      <div id="fpmbody" class="modal-body">
+         <div class="form-group">
+         <label for="usr">Enter New Room Name:</label>
+         <input type="text" class="form-control" name="roomName" 
+         id="roomName" value="">
+         <input type="hidden" id="xpos" name="present_x_position" value="" />
+         <input type="hidden" id="ypos" name="present_y_position" value="" />
          </div>
-      </div><!-- end panel-1 -->
-</main> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" id="saveXY" class="btn btn-primary btn-sm" data-dismiss="modal">Save changes</button>
+      </div>
+   </form>  
+    </div>
+  </div>
+</div>
 
+</main> 
 
 <style>
    label { font-weight: bold;}
@@ -235,19 +264,20 @@
 
    .bg-warning {opacity: 0.85;}
    .bgblue { background-color: #f0f8fa; }
-   
+</style>
+
+<style>
    @if(isset($floorplans->floorplan_image))
 
    .displayDiv { position: relative; width: 1000px; height: 726px; border: solid 1px #ccc;
    background-image: url("{{asset('spcsd/images/floorplans')}}/{{$floorplans->floorplan_image}}"); background-size: contain; display: block; background-repeat: no-repeat; border-radius: 3px;}
-   @endif
-   
+   @endif 
 </style>
 
 <script>
 
-   $('input[type=radio][name=radioFloors]').change(function() {
-      $('form').submit();
+   $('input[name=radioFloors]').change(function() {
+      $('#selectboxes').submit();
    });
 
    const createDragItem = (id, xcoor, ycoor,label, room, icontype ="Circle") => {
@@ -256,13 +286,12 @@
          const itemName = `dragItem${id}`;
          const item = `<div id="${itemName}" data-id="${id}" class="${itemClass} d-flex" data-room = "${room}">
          <div class="mr-auto ml-auto mt-1 mb-1">${label}</div> </div>`;
-         let scale = Math.abs(1000/1135);
-         let newXoffset = xcoor * scale + parentpos.left;
-         let newYoffset = ycoor * scale + (parentpos.top * 0.94);
-         if (newXoffset > parentpos.right) { newXoffset = parentpos.right - 50; }
-         if (newYoffset > parentpos.bottom) { newYoffset = parentpos.bottom - 50; }
+         let scale = Math.abs(1000/1135).toPrecision(2);
+         let newXoffset = (xcoor * scale + parentpos.left).toPrecision(5);
+         let newYoffset = (ycoor * scale + (parentpos.top * 0.93)).toPrecision(5);
+         if (newXoffset > parentpos.right) { newXoffset = (parentpos.right - 50).toPrecision(5); }
+         if (newYoffset > parentpos.bottom) { newYoffset = (parentpos.bottom - 50).toPrecision(5); }
          $("#floorplandiv").append(item);
-         //setTimeout(() => { console.log(`${itemName}`,`Y: ${newYoffset}`, `X: ${newXoffset}`); }, 500);
          setTimeout(() => { let _ = itemName; }, 500);
          $(`#${itemName}`).offset({ top: newYoffset, left: newXoffset});
          $(`#${itemName}`).draggable( {
@@ -271,9 +300,9 @@
             snap: '#floorplandiv',
             stop: () => {
                let finalOffset = $(`#${itemName}`).offset();
-               let finalxPos = finalOffset.left;
-               let finalyPos = finalOffset.top;
-              // saveNewLocation(finalxPos, finalyPos, itemName);
+               let finalxPos = ((finalOffset.left - parentpos.left)/scale).toPrecision(5);
+               let finalyPos = ((finalOffset.top - (parentpos.top * 0.93))/scale).toPrecision(5);
+               saveNewLocation(finalxPos, finalyPos, id, room);
             }
       } );
    }
@@ -301,29 +330,44 @@
          $('.makeDraggable, .makeDraggable2').removeClass('selectedCircle');
          $('#dragItem'+ $(this).data('id')).addClass('selectedCircle');
       });
+
+     // $(document).on('submit','form', function(e) { 
+      $('#saveXY').on('click', function(e) { 
+        // console.log($(this).attr('name'), $(this).attr('action'));
+         $.ajax({
+            type: 'PUT',
+            url: $('#updateRoom').attr('action'),
+            data: $('#updateRoom').serialize(),
+            dataType: "text",
+            encode: true, 
+         })
+         .done(function( msg ) {
+            toastMessage(msg);
+         })
+         .fail(function( jqXHR, textStatus ) {
+            toastMessage("Request failed: " + textStatus );
+         });
+
+         e.preventDefault();
+      });
    });
 
-   const saveNewLocation = (finalxPos, finalyPos, item) => {
-      let itm = '#'+ item;
-      let popTemplate = ['<div class="popover">',
-        '<div class="arrow"></div>',
-        '<div class="popover-content">',
-        '</div>',
-        '</div>'].join('');
+   let toastMessage = function (msg) {
+      console.log('TOAST '+ msg);
+         $('.toast-body').text(msg);
+         $('#popmsg').toast('show');
+      }  
 
-      let content = ['<h4>This is working</h4>',
-                     '<p>What time is it?</p>'].join('');
-
-    $('body').popover({
-         selector: '[rel=popover]',
-         placement: 'top auto',
-         template: popTemplate,
-        //title: 'Room Name',
-        content: content,
-        trigger: 'focus',
-        html: true
-      });
-     // console.log(finalxPos);
+   const saveNewLocation = (finalxPos, finalyPos, id, roomName) => {
+      let putUrl = `/api/device/${id}`;
+      $('#updateRoom').attr('action', putUrl);
+      $('#roomName').val(roomName);
+      $('#xpos').val(finalxPos);
+      $('#ypos').val(finalyPos);
+      $('#fpmModal').modal(); 
+      $('#roomName').focus();
+     // console.log($('#updateRoom').attr('action'));
+    //  console.log($('#updateRoom').serialize());
    }
 </script>
 @endsection
