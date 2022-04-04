@@ -117,7 +117,7 @@ public function update_xy(Request $request, $fpm_id)
 
    if( $machine ) {
       try {
-         $machine->resent_x_position = $request->input('present_x_position');
+         $machine->present_x_position = $request->input('present_x_position');
          $machine->present_y_position = $request->input('present_y_position');
          $machine->room_name = $request->input('roomName');
          #$machine->modified_date = Carbon::now();
