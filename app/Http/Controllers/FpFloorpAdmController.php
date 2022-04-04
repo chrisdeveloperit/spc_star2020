@@ -115,12 +115,12 @@ public function update_xy(Request $request, $fpm_id)
 {  
    $machine = FloorplanMachine::find($fpm_id);    
 
-  # \Log::info(json_encode('FPM_ID: '. $fpm_id));   
+   \Log::info(json_encode('update_xy FPM_ID: '. $fpm_id));   
    if( $machine ) {
       $machine->present_x_position = $request->input('present_x_position');
       $machine->present_y_position = $request->input('present_y_position');
       $machine->room_name = $request->input('roomName');
-      $machine->modified_date = Carbon::now();
+      #$machine->modified_date = Carbon::now();
       $machine->modified_by = 1272;
       $machine->update();
 
