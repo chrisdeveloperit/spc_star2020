@@ -353,8 +353,11 @@
                $('#popmsg').toast('show');
             })
             .fail(function( xhr, textStatus, errorThrown ) {
-               $('#tbody').text('Request failed: '+ textStatus);
+               $('#tbody').text('SAVE FAILED: '+ textStatus);
                $('#popmsg').toast('show');
+               console.log('statusText ' + xhr.statusText);
+               console.log('RESPONSE ' + xhr.responseText);
+               console.log('errorThrown ' + errorThrown);
             });
          });
       });
