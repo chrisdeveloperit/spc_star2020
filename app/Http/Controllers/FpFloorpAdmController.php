@@ -81,7 +81,7 @@ public function show(Request $request)
       $floorplan_machines = DB::table('floorplan_machines AS fm')
          ->join('machine_specs AS ms','ms.spec_id', '=', 'fm.present_spec_id')
          ->leftjoin('machine_types AS mt','fm.present_type_id', '=', 'mt.mach_type_id')
-         ->select('fm.fpm_id', 'fm.present_spec_id', 'fm.present_floorplans_id', 'fm.room_name', 'fm.present_serial_number', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.present_x_position', 'fm.present_y_position', 'fm.mac_address', 'fm.ip_address', 'fm.present_serial_number', 'fm.present_vendor_mach_id', 'ms.make', 'ms.model', 'ms.spec_id','ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
+         ->select('fm.fpm_id', 'fm.present_spec_id', 'fm.present_floorplans_id', 'fm.room_name', 'fm.present_serial_number', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.present_x_position', 'fm.present_y_position', 'fm.mac_address', 'fm.ip_address', 'fm.present_serial_number', 'fm.present_vendor_mach_id', 'ms.mach_make', 'ms.model', 'ms.spec_id','ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
          ->where('fm.present_floorplans_id', '=', $floorplans->fp_id)
          ->where('fm.under_contract', '=', 'Y')
          ->get();

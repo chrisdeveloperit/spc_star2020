@@ -152,7 +152,7 @@
          </thead>
          <tbody>
          @foreach($machines as $mac)
-            <tr class="machinelist" id="row{{$mac->fpm_id}}" data-id="{{$mac->fpm_id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_name}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->ip_address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="{{$mac->make}}">
+            <tr class="machinelist" id="row{{$mac->fpm_id}}" data-id="{{$mac->fpm_id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_name}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->ip_address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="{{$mac->mach_make}}">
                <th scope="row">{{$loop->index + 1 }}</th>
                @if($mac->is_color === 'N')
                <td><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></td>
@@ -160,7 +160,7 @@
                <td><img class="ink" src="{{asset('spcsd/images/magenta_drop.jpg')}}" /></td>
                @endif
                <td>{{$mac->room_name}}</td>
-               <td>{{$mac->make}}</td>
+               <td>{{$mac->mach_make}}</td>
                <td>{{$mac->model}}</td>
                <td>
                   {{$connect = $mac->ip_address !== NULL ? "Networked" : "Local";}}
