@@ -368,7 +368,7 @@
          }  
 
       const saveNewLocation = (finalxPos, finalyPos, id, roomName) => {
-         let putUrl = `/api/device/${id}`;
+         let putUrl = `../api/device/${id}`;
          $('#updateRoom').attr('action', putUrl);
          $('#roomName').val(roomName);
          $('#xpos').val(finalxPos);
