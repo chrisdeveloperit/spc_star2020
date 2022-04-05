@@ -183,7 +183,7 @@
    <div class="modal fade" id="fpmModal" tabindex="-1" aria-labelledby="fpmModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-sm">
       <div class="modal-content bg-light">
-      <form name="updateRoom" id="updateRoom" action="" method="put">
+      <form name="updateRoom" id="updateRoom" action="" method="post">
          @csrf
          @method('PUT')
          <div id="fpmbody" class="modal-body">
@@ -342,7 +342,7 @@
       // $(document).on('submit','form', function(e) { 
          $('#saveXY').on('click', function(e) { 
             $.ajax({
-               type: 'PUT',
+               type: 'POST',
                url: $('#updateRoom').attr('action'),
                data: $('#updateRoom').serialize(),
                dataType: "text",
