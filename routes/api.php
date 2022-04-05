@@ -22,6 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('/device')->group(function(){
   // Route::get('/{id}', [FpFloorpAdmController::class, 'update_xy']);
    Route::put('/{id}', [FpFloorpAdmController::class, 'update_xy']);
-   Route::post('/create', [FpFloorpAdmController::class, 'create']);
+   Route::post('/{id}', [FpFloorpAdmController::class, 'update_xy']);
 });
 #Route::get('/device', [FpFloorpAdmController::class, 'deviceDetail']);
