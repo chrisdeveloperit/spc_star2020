@@ -185,7 +185,7 @@
       <div class="modal-content bg-light">
       <form name="updateRoom" id="updateRoom" action="" method="post">
          @csrf
-         @method('PUT')
+         @method('POST')
          <div id="fpmbody" class="modal-body">
             <div class="form-group">
             <label for="usr">Enter New Room Name:</label>
