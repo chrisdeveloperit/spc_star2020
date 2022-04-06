@@ -138,37 +138,36 @@
    <div class="col-sm-6">
       <div class="collapse multi-collapse" id="deviceList">
          <div class="card card-body">
-
-         <table class="table table-hover">
-            <thead>
-               <tr style="background-color: #f0f8fa">
-                  <th scope="col">#</th>
-                  <th scope="col"><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></th>
-                  <th scope="col">Room</th>
-                  <th scope="col">Make</th>
-                  <th scope="col">Model</th>
-                  <th scope="col">Connectivity</th>
-               </tr>
-            </thead>
-            <tbody>
-            @foreach($machines as $mac)
-               <tr class="machinelist" id="row{{$mac->fpm_id}}" data-id="{{$mac->fpm_id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_name}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->ip_address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="{{$mac->mach_make}}">
-                  <th scope="row">{{$loop->index + 1 }}</th>
-                  @if($mac->is_color === 'N')
-                  <td><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></td>
-                  @else
-                  <td><img class="ink" src="{{asset('spcsd/images/magenta_drop.jpg')}}" /></td>
-                  @endif
-                  <td>{{$mac->room_name}}</td>
-                  <td>{{$mac->mach_make}}</td>
-                  <td>{{$mac->model}}</td>
-                  <td>
-                     {{$connect = $mac->ip_address !== NULL ? "Networked" : "Local";}}
-                  </td>
-               </tr>
-            @endforeach
-            </tbody>
-         </table>
+            <table class="table table-hover">
+               <thead>
+                  <tr style="background-color: #f0f8fa">
+                     <th scope="col">#</th>
+                     <th scope="col"><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></th>
+                     <th scope="col">Room</th>
+                     <th scope="col">Make</th>
+                     <th scope="col">Model</th>
+                     <th scope="col">Connectivity</th>
+                  </tr>
+               </thead>
+               <tbody>
+               @foreach($machines as $mac)
+                  <tr class="machinelist" id="row{{$mac->fpm_id}}" data-id="{{$mac->fpm_id}}" data-image="{{$mac->machine_image}}" data-bldg="{{$floorplans->bldg_name}}" data-room="{{$mac->room_name}}" data-mactype="{{$mac->type_name}}" data-serial="{{$mac->present_serial_number}}" data-ip="{{$mac->ip_address}}" data-macAdd="{{$mac->mac_address}}" data-model="{{$mac->model}}" data-vendorid="{{$mac->mach_make}}">
+                     <th scope="row">{{$loop->index + 1 }}</th>
+                     @if($mac->is_color === 'N')
+                     <td><img class="ink" src="{{asset('spcsd/images/black_drop.jpg')}}" /></td>
+                     @else
+                     <td><img class="ink" src="{{asset('spcsd/images/magenta_drop.jpg')}}" /></td>
+                     @endif
+                     <td>{{$mac->room_name}}</td>
+                     <td>{{$mac->mach_make}}</td>
+                     <td>{{$mac->model}}</td>
+                     <td>
+                        {{$connect = $mac->ip_address !== NULL ? "Networked" : "Local";}}
+                     </td>
+                  </tr>
+               @endforeach
+               </tbody>
+            </table>
          </div>
       </div>
    </div>
@@ -208,21 +207,22 @@
 @endsection
 
 @section('css')
-   <style>
+         <style>
+
       label { font-weight: bold;}
       .detailLabel {
       text-align: right;
       width: 125px;
          }
       #template { width: 200px;}
-   /** .fp { width: 1120px; height: 813px; min-width:1120px; min-height: 813px; }  **/
-      .makeDraggable { position: absolute; width: 25px; height: 25px; border: 2px solid #1769aa; background-color: #00bcd4; color: #fff; border-radius: 50%; z-index: 100; cursor: pointer; font-size: 11px; font-weight:bold;}
 
-      .makeDraggable2 { position: absolute; width: 30px; height: 30px; border: 0px solid #1769aa; background-image:url('/images/shapes/multiprinter2.svg');  background-size: contain; display: block; background-repeat: no-repeat;background-color: transparent; color: #fff;  z-index: 100; cursor: pointer; font-size: 11px; font-weight:bold;  padding-right:4px;padding-top:3px;}
+      .makeDraggable { position: absolute; width: 25px; height: 25px; border: 2px solid #1769aa; background-color: #00bcd4; color: #fff; border-radius: 50%; z-index: 50; cursor: pointer; font-size: 11px; font-weight:bold;}
+
+      .makeDraggable2 { position: absolute; width: 30px; height: 30px; border: 0px solid #1769aa; background-image:url('/images/shapes/multiprinter2.svg');  background-size: contain; display: block; background-repeat: no-repeat;background-color: transparent; color: #fff;  z-index: 50; cursor: pointer; font-size: 11px; font-weight:bold;  padding-right:4px;padding-top:3px;}
 
       .ink {width: 8px; height: 16px; }
 
-      #deviceList, #detailCollapse {
+      #deviceList, #detailCollapse, .card-body {
          min-height: 466px;
 
       }
@@ -269,7 +269,7 @@
          top: 40%;
          position: fixed;
          transform: translate(-50%, -40%);
-         z-index: 100;
+         z-index: 52;
       }
       .toast-body { min-height:4em; }
       @if(isset($floorplans->floorplan_image))
@@ -283,8 +283,11 @@
 @section('scripts')
 
    <script>
-
-      $('input[name=radioFloors]').change(function() {
+   let vertOffset = 0;
+   $('.multi-collapse').on('show.bs.collapse', ()=>{ vertOffset = 466; })
+                       .on('hide.bs.collapse', ()=>{ vertOffset = 0; });
+ 
+   $('input[name=radioFloors]').change(function() {
          $('#selectboxes').submit();
       });
 
@@ -309,7 +312,10 @@
                stop: () => {
                   let finalOffset = $(`#${itemName}`).offset();
                   let finalxPos = ((finalOffset.left - parentpos.left)/scale).toPrecision(5);
-                  let finalyPos = ((finalOffset.top - (parentpos.top * 0.93))/scale).toPrecision(5);
+                  let finalyPos = (((finalOffset.top - (parentpos.top * 0.93))/scale));
+                  console.log('Before',finalyPos);
+                  finalyPos = (finalyPos - vertOffset).toPrecision(5);
+                  console.log('After',finalyPos);
                   saveNewLocation(finalxPos, finalyPos, id, room);
                }
          } );
@@ -368,8 +374,8 @@
          }  
 
       const saveNewLocation = (finalxPos, finalyPos, id, roomName) => {
-        // let putUrl = `api/device/${id}`;
-         let putUrl = `https://star2020.net/star2020_dev/api/device/${id}`;
+        console.log(`{{url('/')}}/api/device/${id}`);
+        let putUrl = `{{url('/')}}/api/device/${id}`;
          $('#updateRoom').attr('action', putUrl);
          $('#roomName').val(roomName);
          $('#xpos').val(finalxPos);
