@@ -181,15 +181,15 @@
    @if(isset($floorplans->floorplan_image))
    <div id="OtherDevLegend" class="otherDeviceLegend">
       <ul>
-         <li><span class="lgndItms lgndItm1"></span> = Computer</li>
-         <li><div class="lgndItms lgndItm2"></div> = Computer Lab</li>
-         <li><div class="lgndItms lgndItm3"></div> = Digital Projector</li>
-         <li><div class="lgndItms lgndItm4"></div> = IP Camera</li>
-         <li><div class="lgndItms lgndItm5"></div> = Server</li>
-         <li><div class="lgndItms lgndItm6"></div> = Switch</li>
-         <li><div class="lgndItms lgndItm7"></div> = Tablet</li>
-         <li><div class="lgndItms lgndItm8"></div> = VOIP Phone</li>
-         <li><div class="lgndItms lgndItm9"></div> = Wireless Access Point</li>
+         <li><span class="lgndItms lgndItm1"></span> Computer</li>
+         <li><div class="lgndItms lgndItm2"></div> Computer Lab</li>
+         <li><div class="lgndItms lgndItm3"></div> Digital Projector</li>
+         <li><div class="lgndItms lgndItm4"></div> IP Camera</li>
+         <li><div class="lgndItms lgndItm5"></div> Server</li>
+         <li><div class="lgndItms lgndItm6"></div> Switch</li>
+         <li><div class="lgndItms lgndItm7"></div> Tablet</li>
+         <li><div class="lgndItms lgndItm8"></div> VOIP Phone</li>
+         <li><div class="lgndItms lgndItm9"></div> WAP</li>
       </ul>
    </div>
    @endif
@@ -298,7 +298,8 @@
       @if(isset($floorplans->floorplan_image))
       .lgndItms {
          display: inline-block;
-         background-size: 30px 30px;
+         background-size: 25px 25px;
+         background-repeat: no-repeat;
          width: 30px;
          height: 30px;
       }
@@ -311,10 +312,13 @@
       .lgndItm7 { background-image: url("{{asset('spcsd/images/odlegend')}}/tablet.png"); }
       .lgndItm8 { background-image: url("{{asset('spcsd/images/odlegend')}}/voip-phone.png"); }
       .lgndItm9 { background-image: url("{{asset('spcsd/images/odlegend')}}/wap.png"); }
+      .otherDeviceLegend ul {
+         padding-inline-start: 0px;
+      }
       .otherDeviceLegend ul li {
 		    display: inline;
 		    list-style-type: none;
-		    padding-right: 20px;
+		    padding-right: 10px;
 		}
       @endif
    </style>
