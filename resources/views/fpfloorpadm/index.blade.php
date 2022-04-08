@@ -178,6 +178,7 @@
       </div>
    </div><!-- end panel-1 -->
    <!-- LEGEND -->
+   @if(isset($floorplans->floorplan_image))
    <div id="OtherDevLegend" class="otherDeviceLegend">
       <ul>
          <li><span class="lgndItms lgndItm1"></span> = Computer</li>
@@ -191,7 +192,7 @@
          <li><div class="lgndItms lgndItm9"></div> = Wireless Access Point</li>
       </ul>
    </div>
-
+   @endif
    <!-- end of LEGEND -->
 
 
@@ -294,6 +295,7 @@
       .displayDiv { position: relative; width: 1000px; height: 726px; border: solid 1px #ccc;
       background-image: url("{{asset('spcsd/images/floorplans')}}/{{$floorplans->floorplan_image}}"); background-size: contain; display: block; background-repeat: no-repeat; border-radius: 3px;}
       @endif 
+      @if(isset($floorplans->floorplan_image))
       .lgndItms {
          display: inline-block;
          background-size: 30px 30px;
@@ -314,6 +316,7 @@
 		    list-style-type: none;
 		    padding-right: 20px;
 		}
+      @endif
    </style>
 @endsection
 
