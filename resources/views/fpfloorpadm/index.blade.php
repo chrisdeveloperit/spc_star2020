@@ -180,16 +180,16 @@
    <!-- LEGEND -->
    @if(isset($floorplans->floorplan_image))
    <div id="OtherDevLegend" class="otherDeviceLegend">
-      <ul>
-         <li><span class="lgndItms lgndItm1"></span> Computer</li>
-         <li><div class="lgndItms lgndItm2"></div> Computer Lab</li>
-         <li><div class="lgndItms lgndItm3"></div> Digital Projector</li>
-         <li><div class="lgndItms lgndItm4"></div> IP Camera</li>
-         <li><div class="lgndItms lgndItm5"></div> Server</li>
-         <li><div class="lgndItms lgndItm6"></div> Switch</li>
-         <li><div class="lgndItms lgndItm7"></div> Tablet</li>
-         <li><div class="lgndItms lgndItm8"></div> VOIP Phone</li>
-         <li><div class="lgndItms lgndItm9"></div> WAP</li>
+      <ul class="list-group list-group-horizontal">
+         <li class="list-group-item"><span class="lgndItms lgndItm1"></span> Computer</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm2"></span> Computer Lab</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm3"></span> Digital Projector</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm4"></span> IP Camera</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm5"></span> Server</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm6"></span> Switch</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm7"></span> Tablet</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm8"></span> VOIP Phone</li>
+         <li class="list-group-item"><span class="lgndItms lgndItm9"></span> WAP</li>
       </ul>
    </div>
    @endif
@@ -302,6 +302,7 @@
          background-repeat: no-repeat;
          width: 30px;
          height: 30px;
+         vertical-align: middle;
       }
       .lgndItm1 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_icon.png"); }
       .lgndItm2 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_lab.png"); }
@@ -316,10 +317,15 @@
          padding-inline-start: 0px;
       }
       .otherDeviceLegend ul li {
-		    display: inline;
-		    list-style-type: none;
-		    padding-right: 10px;
+         display: inline;
+         list-style-type: none;
+         padding-right: 10px;
+         vertical-align: middle;
 		}
+      .list-group-item + .list-group-item {
+         border-top-width: 0;
+         padding-left: 0px;
+      }
       @endif
    </style>
 @endsection
