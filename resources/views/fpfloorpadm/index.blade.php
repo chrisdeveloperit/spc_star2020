@@ -177,6 +177,23 @@
       <div id="floorplandiv" class="displayDiv">
       </div>
    </div><!-- end panel-1 -->
+   <!-- LEGEND -->
+   <div id="OtherDevLegend" class="otherDeviceLegend">
+      <ul>
+         <li><span class="lgndItms lgndItm1"></span> = Computer</li>
+         <li><div class="lgndItms lgndItm2"></div> = Computer Lab</li>
+         <li><div class="lgndItms lgndItm3"></div> = Digital Projector</li>
+         <li><div class="lgndItms lgndItm4"></div> = IP Camera</li>
+         <li><div class="lgndItms lgndItm5"></div> = Server</li>
+         <li><div class="lgndItms lgndItm6"></div> = Switch</li>
+         <li><div class="lgndItms lgndItm7"></div> = Tablet</li>
+         <li><div class="lgndItms lgndItm8"></div> = VOIP Phone</li>
+         <li><div class="lgndItms lgndItm9"></div> = Wireless Access Point</li>
+      </ul>
+   </div>
+
+   <!-- end of LEGEND -->
+
 
          <!-- MODAL WINDOW -->
    <div class="modal fade" id="fpmModal" tabindex="-1" aria-labelledby="fpmModalLabel" aria-hidden="true">
@@ -277,6 +294,26 @@
       .displayDiv { position: relative; width: 1000px; height: 726px; border: solid 1px #ccc;
       background-image: url("{{asset('spcsd/images/floorplans')}}/{{$floorplans->floorplan_image}}"); background-size: contain; display: block; background-repeat: no-repeat; border-radius: 3px;}
       @endif 
+      .lgndItms {
+         display: inline-block;
+         background-size: 30px 30px;
+         width: 30px;
+         height: 30px;
+      }
+      .lgndItm1 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_icon.png"); }
+      .lgndItm2 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_lab.png"); }
+      .lgndItm3 { background-image: url("{{asset('spcsd/images/odlegend')}}/digital_projector.png"); }
+      .lgndItm4 { background-image: url("{{asset('spcsd/images/odlegend')}}/ip-camera.png"); }
+      .lgndItm5 { background-image: url("{{asset('spcsd/images/odlegend')}}/server.png"); }
+      .lgndItm6 { background-image: url("{{asset('spcsd/images/odlegend')}}/switch.png"); }
+      .lgndItm7 { background-image: url("{{asset('spcsd/images/odlegend')}}/tablet.png"); }
+      .lgndItm8 { background-image: url("{{asset('spcsd/images/odlegend')}}/voip-phone.png"); }
+      .lgndItm9 { background-image: url("{{asset('spcsd/images/odlegend')}}/wap.png"); }
+      .otherDeviceLegend ul li {
+		    display: inline;
+		    list-style-type: none;
+		    padding-right: 20px;
+		}
    </style>
 @endsection
 
