@@ -63,7 +63,7 @@ public function show(Request $request)
       $floor_num = $request->radioFloors ?? $arry_floors[0];
    }
 
-   $floorplans = DB::table('floorplans AS fp')
+$floorplans = DB::table('floorplans AS fp')
    ->join('buildings AS bldg', 'bldg.bldg_id', '=', 'fp.buildings_id')
    ->select('fp.fp_id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
    ->where(array('fp.buildings_id' => $request->buildingsSel,
@@ -84,6 +84,7 @@ public function show(Request $request)
          ->select('fm.fpm_id', 'fm.present_spec_id', 'fm.present_floorplans_id', 'fm.room_name', 'fm.present_serial_number', 'fm.present_type_id', 'fm.is_proposed', 'fm.under_contract', 'fm.present_x_position', 'fm.present_y_position', 'fm.mac_address', 'fm.ip_address', 'fm.present_serial_number', 'fm.present_vendor_mach_id', 'ms.mach_make', 'ms.model', 'ms.spec_id','ms.machine_types_id', 'ms.machine_image', 'ms.is_color', 'mt.type_name', 'mt.icon_type')
          ->where('fm.present_floorplans_id', '=', $floorplans->fp_id)
          ->where('fm.under_contract', '=', 'Y')
+         ->orderBy('fm.room_name')
          ->get();
    }
 
@@ -112,24 +113,24 @@ public function destroy($id)
    }
 
 public function update_xy(Request $request, $fpm_id) 
-{  
-   $machine = FloorplanMachine::find($fpm_id);    
+   {  
+      $machine = FloorplanMachine::find($fpm_id);    
 
-   if( $machine ) {
-      try {
-         $machine->present_x_position = $request->input('present_x_position');
-         $machine->present_y_position = $request->input('present_y_position');
-         $machine->room_name = $request->input('roomName');
-         #$machine->modified_date = Carbon::now();
-         $machine->modified_by = 1272;
-         $machine->update();
+      if( $machine ) {
+         try {
+            $machine->present_x_position = $request->input('present_x_position');
+            $machine->present_y_position = $request->input('present_y_position');
+            $machine->room_name = $request->input('roomName');
+            #$machine->modified_date = Carbon::now();
+            $machine->modified_by = 1272;
+            $machine->update();
 
-         return 'Machine location was updated';
-      }
-      catch (Throwable $e) {
-         \Log::info('update_xy ERROR: '. $e.getMessage());
-        return false; 
+            return 'Machine location was updated';
+         }
+         catch (Throwable $e) {
+            \Log::info('update_xy ERROR: '. $e.getMessage());
+         return false; 
+         }
       }
    }
-}
 }
