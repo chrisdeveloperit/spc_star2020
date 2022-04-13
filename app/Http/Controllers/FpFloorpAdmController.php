@@ -41,6 +41,8 @@ public function show(Request $request)
 
    {
    # \Log::info(json_encode($request->all()));
+   $floor_num = null;
+   $other_devices = null;
 
    $org_data = DB::table('organizations')
    ->select('org_id', 'org_name')
@@ -49,27 +51,31 @@ public function show(Request $request)
    ->orderby('org_name')
    ->get();
 
-   $arry_floors = [];
-   $floor_num = NULL;
-
    $total_floors = DB::table('floorplans')
    ->select('floor_number')
    ->where('buildings_id', '=', $request->buildingsSel)
    ->orderby('floor_number')
    ->get();
+ if (isset($request->buildingsSel))
+ {
+   // $firstFloor = DB::table('floorplans')
+   // ->select('min(floor_number) As firstfloor')
+   // ->where('buildings_id', '=', $request->buildingsSel)
+   // ->get();
+   $floor_num = $request->radioFloors ?? 1;
+ }
 
-   if($request->buildingsSel !== NULL && $total_floors !== NULL) {
-      $arry_floors = json_decode($total_floors, true);
-      $floor_num = $request->radioFloors ?? $arry_floors[0];
-   }
 
-$floorplans = DB::table('floorplans AS fp')
-   ->join('buildings AS bldg', 'bldg.bldg_id', '=', 'fp.buildings_id')
-   ->select('fp.fp_id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
-   ->where(array('fp.buildings_id' => $request->buildingsSel,
-         'fp.floor_number' => $floor_num))
-   ->orderBy('fp.floor_number')
-   ->first();
+   
+
+
+   $floorplans = DB::table('floorplans AS fp')
+      ->join('buildings AS bldg', 'bldg.bldg_id', '=', 'fp.buildings_id')
+      ->select('fp.fp_id', 'fp.floorplan_image', 'fp.floor_number', 'bldg.bldg_name')
+      ->where(array('fp.buildings_id' => $request->buildingsSel,
+            'fp.floor_number' => $floor_num))
+      ->orderBy('fp.floor_number')
+      ->first();
 
    $buildings = Building::orderBy('bldg_name')
       ->where('buildings.organizations_id', '=', $request->sorg_id)
@@ -86,14 +92,23 @@ $floorplans = DB::table('floorplans AS fp')
          ->where('fm.under_contract', '=', 'Y')
          ->orderBy('fm.room_name')
          ->get();
+
+         $other_devices = DB::table('other_devices AS od')
+         ->leftjoin('machine_types AS mt','od.type_id', '=', 'mt.mach_type_id')
+         ->select('od.id as other_device_id', 'od.x_pos', 'od.y_pos', 'od.room',
+         'od.make', 'od.model','od.ip_address', 'od.mac_address', 'od.serial_number','mt.mach_type_id', 'mt.type_name', 'mt.icon_type')
+         ->where('od.fp_id', '=', $floorplans->fp_id)
+         ->orderBy('od.room')
+         ->get();
    }
 
    return view('fpfloorpadm.index', ['sbldg_id' => $request->buildingsSel, 'sorg_id' => $request->sorg_id, 'sfloornum' => $floor_num])
-         ->with('buildings', $buildings)
+         ->with('buildings',  $buildings)
          ->with('floorplans', $floorplans)
          ->with('org_data', $org_data)
          ->with('machines', $floorplan_machines)
-         ->with('total_floors', $total_floors);
+         ->with('total_floors', $total_floors)
+         ->with('other_devices', $other_devices);
    }
 
 

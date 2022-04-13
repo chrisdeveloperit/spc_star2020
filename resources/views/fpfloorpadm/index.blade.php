@@ -4,7 +4,7 @@
    <script type="text/javascript" src="{{asset('jQuery-3.3.1/jquery-3.3.1.min.js')}}"></script>
    <div>
       <div class="toast" id="popmsg" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1800">
-         <div id="tbody" class="toast-body  bg-warning d-flex justify-content-center align-items-center"> toast message. </div>
+         <div id="tbody" class="toast-body  bg-success d-flex justify-content-center align-items-center"> toast message. </div>
       </div>
 
    <form name="selectboxes" id="selectboxes" action="{{ route('fpfloorpadm.index') }}" method="post">
@@ -76,7 +76,7 @@
    <main id="js-page-content">
          <div class="row">
             <div class="col-xl-12">
-         @if(isset($machines) )
+   @if(isset($machines) )
          <p>
       <button class="btn btn-primary m-1" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="deviceList">Device List - Detail </button>
          </p>
@@ -172,12 +172,15 @@
          </div>
       </div>
       </div>
-         @endif
+   @endif
+   <!-- FLOORPLAN ------->
       <div id="panel-1" class="wrapper">
          <div id="floorplandiv" class="displayDiv">
          </div>
-      </div><!-- end panel-1 -->
-      <!-- LEGEND -->
+      </div>
+   <!-- ----------- ----->
+
+   <!-- LEGEND ------------->
       @if(isset($floorplans->floorplan_image))
       <div id="OtherDevLegend" class="otherDeviceLegend">
          <ul class="list-group list-group-horizontal">
@@ -193,33 +196,33 @@
          </ul>
       </div>
       @endif
-      <!-- end of LEGEND -->
-
-      <!-- MODAL WINDOW -->
+   <!-- end of LEGEND--------->
+   <!-- MODAL WINDOW ----->
       <div class="modal fade" id="fpmModal" tabindex="-1" aria-labelledby="fpmModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-sm">
-         <div class="modal-content bg-light">
-         <form name="updateRoom" id="updateRoom" action="" method="post">
-            @csrf
-            @method('POST')
-            <div id="fpmbody" class="modal-body">
-               <div class="form-group">
-               <label for="usr">Enter New Room Name:</label>
-               <input type="text" class="form-control" name="roomName" 
-               id="roomName" value="">
-               <input type="hidden" id="xpos" name="present_x_position" value="" />
-               <input type="hidden" id="ypos" name="present_y_position" value="" />
+         <div class="modal-dialog modal-sm">
+            <div class="modal-content bg-light">
+            <form name="updateRoom" id="updateRoom" action="" method="post">
+               @csrf
+               @method('POST')
+               <div id="fpmbody" class="modal-body">
+                  <div class="form-group">
+                  <label for="usr">Enter New Room Name:</label>
+                  <input type="text" class="form-control" name="roomName" 
+                  id="roomName" value="">
+                  <input type="hidden" id="xpos" name="present_x_position" value="" />
+                  <input type="hidden" id="ypos" name="present_y_position" value="" />
+                  <input type="hidden" id="elemid" value="" />
+                  </div>
                </div>
+               <div class="modal-footer">
+                  <button type="button" id="dismiss" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                  <button type="button" id="saveXY" class="btn btn-primary btn-sm" data-dismiss="modal">Save Changes</button>
+               </div>
+            </form>  
             </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-               <button type="button" id="saveXY" class="btn btn-primary btn-sm" data-dismiss="modal">Save Changes</button>
-            </div>
-         </form>  
          </div>
       </div>
-      </div>
-
+   <!-- ----------- ----->
    </main> 
 @endsection
 
@@ -235,12 +238,11 @@
       /**
       .makeDraggable { position: absolute; width: 25px; height: 25px; border: 2px solid #1769aa; background-color: #00bcd4; color: #fff; border-radius: 50%; z-index: 50; cursor: pointer; font-size: 11px; font-weight:bold;}
      
-
       .makeDraggable2 { position: absolute; width: 30px; height: 30px; border: 0px solid #1769aa; background-image:url("{{asset('spcsd/images/shapes')}}/multiprinter.png");  background-size: contain; display: block; background-repeat: no-repeat;background-color: transparent; color: #fff;  z-index: 50; cursor: pointer; font-size: 11px; font-weight:bold;  padding-right:4px;padding-top:3px;}
       **/
 
-      /** MACHINE ICONS ***********/
-      .makeDraggable { position: absolute; width: 28px; height: 28px; border: 0px solid #1769aa; z-index: 50; cursor: pointer; font-size: 11px; font-weight:bold; color: #fff; display: block; background-repeat: no-repeat;}
+   /** MACHINE ICONS ********************************************/
+      .makeDraggable { position: absolute; width: 25px; height: 25px; border: 0px solid #1769aa; z-index: 50; cursor: pointer; font-size: 10px; font-weight:bold; color: #fff; display: block; background-repeat: no-repeat;}
 
       .ink {width: 8px; height: 16px; }
       
@@ -256,7 +258,7 @@
       .tablet { background-image: url("{{asset('spcsd/images/odlegend')}}/tablet.png"); background-size: contain;}
       .VOIP-Phone { background-image: url("{{asset('spcsd/images/odlegend')}}/voip-phone.png"); background-size: contain;}
       .WAP { background-image: url("{{asset('spcsd/images/odlegend')}}/wap.png"); background-size: contain;}
-      /** ************************/
+   /** **********************************************************/
 
       #deviceList, #detailCollapse, .card-body {
          min-height: 466px;
@@ -313,36 +315,36 @@
       background-image: url("{{asset('spcsd/images/floorplans')}}/{{$floorplans->floorplan_image}}"); background-size: contain; display: block; background-repeat: no-repeat; border-radius: 3px;}
       @endif 
       @if(isset($floorplans->floorplan_image))
-      .lgndItms {
-         display: inline-block;
-         background-size: 25px 25px;
-         background-repeat: no-repeat;
-         width: 30px;
-         height: 30px;
-         vertical-align: middle;
-      }
-      .lgndItm1 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_icon.png"); }
-      .lgndItm2 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_lab.png"); }
-      .lgndItm3 { background-image: url("{{asset('spcsd/images/odlegend')}}/digital_projector.png"); }
-      .lgndItm4 { background-image: url("{{asset('spcsd/images/odlegend')}}/ip-camera.png"); }
-      .lgndItm5 { background-image: url("{{asset('spcsd/images/odlegend')}}/server.png"); }
-      .lgndItm6 { background-image: url("{{asset('spcsd/images/odlegend')}}/switch.png"); }
-      .lgndItm7 { background-image: url("{{asset('spcsd/images/odlegend')}}/tablet.png"); }
-      .lgndItm8 { background-image: url("{{asset('spcsd/images/odlegend')}}/voip-phone.png"); }
-      .lgndItm9 { background-image: url("{{asset('spcsd/images/odlegend')}}/wap.png"); }
-      .otherDeviceLegend ul {
-         padding-inline-start: 0px;
-      }
-      .otherDeviceLegend ul li {
-         display: inline;
-         list-style-type: none;
-         padding-right: 10px;
-         vertical-align: middle;
-		}
-      .list-group-item + .list-group-item {
-         border-top-width: 0;
-         padding-left: 0px;
-      }
+         .lgndItms {
+            display: inline-block;
+            background-size: 25px 25px;
+            background-repeat: no-repeat;
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+         }
+         .lgndItm1 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_icon.png"); }
+         .lgndItm2 { background-image: url("{{asset('spcsd/images/odlegend')}}/computer_lab.png"); }
+         .lgndItm3 { background-image: url("{{asset('spcsd/images/odlegend')}}/digital_projector.png"); }
+         .lgndItm4 { background-image: url("{{asset('spcsd/images/odlegend')}}/ip-camera.png"); }
+         .lgndItm5 { background-image: url("{{asset('spcsd/images/odlegend')}}/server.png"); }
+         .lgndItm6 { background-image: url("{{asset('spcsd/images/odlegend')}}/switch.png"); }
+         .lgndItm7 { background-image: url("{{asset('spcsd/images/odlegend')}}/tablet.png"); }
+         .lgndItm8 { background-image: url("{{asset('spcsd/images/odlegend')}}/voip-phone.png"); }
+         .lgndItm9 { background-image: url("{{asset('spcsd/images/odlegend')}}/wap.png"); }
+         .otherDeviceLegend ul {
+            padding-inline-start: 0px;
+         }
+         .otherDeviceLegend ul li {
+            display: inline;
+            list-style-type: none;
+            padding-right: 10px;
+            vertical-align: middle;
+         }
+         .list-group-item + .list-group-item {
+            border-top-width: 0;
+            padding-left: 0px;
+         }
       @endif
    </style>
 @endsection
@@ -355,42 +357,43 @@
    
       $('input[name=radioFloors]').change(function() {
             $('#selectboxes').submit();
+
          });
 
          const createDragItem = (id, xcoor, ycoor,label, room, icontype ="Circle") => {
                const parentpos = document.getElementById('floorplandiv').getBoundingClientRect();
                const itemClass = icontype == "Octagon" ? "makeDraggable2" : "makeDraggable";
                const itemName = `dragItem${id}`;
-               const item = `<div id="${itemName}" data-id="${id}" class="makeDraggable ${icontype} d-flex" data-room = "${room}">
-               <div class="mr-auto ml-auto mt-1 mb-1">${label}</div> </div>`;
+               
                let scale = Math.abs(1115/1135).toPrecision(2);
-               let newXoffset = (xcoor * scale + parentpos.left).toPrecision(5);
-               let newYoffset = (ycoor * scale + (parentpos.top * 0.93)).toPrecision(5);
-               /* let newXoffset = (xcoor * scale).toPrecision(5);
-               let newYoffset = (ycoor * scale).toPrecision(5); */
-               if (newXoffset > parentpos.right) { newXoffset = (parentpos.right - 50).toPrecision(5); }
-               if (newYoffset > parentpos.bottom) { newYoffset = (parentpos.bottom - 50).toPrecision(5); }
+               let newXoffset = Math.round(xcoor * scale );
+               let newYoffset = Math.round((ycoor - 25 )* scale );
+               const item = `<div id="${itemName}" data-id="${id}" class="makeDraggable ${icontype} d-flex" data-room = "${room}" classx="${xcoor}px" style="top: ${ newYoffset}px; left: ${newXoffset}px;">
+               <div class="mr-auto ml-auto mt-1 mb-1">${label}</div> </div>`;
                $("#floorplandiv").append(item);
-               setTimeout(() => { let _ = itemName; }, 500);
-               $(`#${itemName}`).offset({ top: newYoffset, left: newXoffset});
+              
                $(`#${itemName}`).draggable( {
                   containment: '#floorplandiv',
                   cursor: 'point',
                   snap: '#floorplandiv',
                   stop: () => {
-                     let finalOffset = $(`#${itemName}`).offset();
-                     let finalxPos = ((finalOffset.left - parentpos.left)/scale).toPrecision(5);
-                     let finalyPos = (((finalOffset.top - (parentpos.top * 0.93))/scale));
-                     console.log('Before',finalyPos);
+                     $('#elemid').val(id);
+                     let finalOffset = $(`#${itemName}`).position();
+                     let finalxPos = Math.round((finalOffset.left )/scale)
+                     let finalyPos = Math.round((finalOffset.top + 25)/scale); 
                      finalyPos = (finalyPos - vertOffset).toPrecision(5);
-                     console.log('After',finalyPos);
                      saveNewLocation(finalxPos, finalyPos, id, room);
                   }
             } );
          }
          @if(isset($machines) )
+            const machineData = [];
             @foreach($machines as $mac)
+            
+            machineData.push({ 'fpm_id': {{$mac->fpm_id}}, 'present_x_position': {{$mac->present_x_position}}, 'present_y_position': {{$mac->present_y_position}} })
             createDragItem({{$mac->fpm_id}}, {{$mac->present_x_position}}, {{$mac->present_y_position}}, "{{$loop->index + 1 }}", "{{$mac->room_name}}", "{{$mac->icon_type}}");
+
+
          @endforeach 
          @endif 
 
@@ -412,8 +415,17 @@
                $('.makeDraggable, .makeDraggable2').removeClass('selectedCircle');
                $('#dragItem'+ $(this).data('id')).addClass('selectedCircle');
             });
+            $('#dismiss').on('click', function(e) {
+               let data = $('#updateRoom')
+               let id =  $('#elemid').val();
+             
+               let original = machineData.find(d=>d.fpm_id == id);
+               $('#dragItem'+id).draggable({ revert: true });
 
+               
+            }); 
             $('#saveXY').on('click', function(e) { 
+         
                $.ajax({
                   type: 'POST',
                   url: $('#updateRoom').attr('action'),
